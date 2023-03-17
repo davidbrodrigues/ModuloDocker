@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+
+  web:
+    image: odoo:latest
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: odoo
+      PGHOST: db
+    volumes:
+      - odoo-web-addons:/mnt/extra-addons
+      - odoo-web-data:/var/lib/odoo
+      - odoo-web-config:/etc/odoo
+
+volumes:
+  odoo-db-data:
+  odoo-web-addons:
+  odoo-web-data:
+  odoo-web-config:
